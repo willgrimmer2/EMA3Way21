@@ -1,0 +1,209 @@
+#region Using declarations
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Xml.Serialization;
+using NinjaTrader.Cbi;
+using NinjaTrader.Gui;
+using NinjaTrader.Gui.Chart;
+using NinjaTrader.Gui.SuperDom;
+using NinjaTrader.Gui.Tools;
+using NinjaTrader.Data;
+using NinjaTrader.NinjaScript;
+using NinjaTrader.Core.FloatingPoint;
+using NinjaTrader.NinjaScript.DrawingTools;
+#endregion
+
+//This namespace holds Indicators in this folder and is required. Do not change it. 
+namespace NinjaTrader.NinjaScript.Indicators
+{
+	public class EMA3way21 : Indicator
+	{
+		private EMA EMA1;
+		private EMA EMA2;
+		private EMA EMA3;
+		private MACD MACD1;
+		
+		protected override void OnStateChange()
+		{
+			if (State == State.SetDefaults)
+			{
+				Description									= @"Colors background of MACD over or under 0";
+				Name										= "EMA3way21";
+				Calculate									= Calculate.OnBarClose;
+				IsOverlay									= false;
+				DisplayInDataBox							= true;
+				DrawOnPricePanel							= true;
+				DrawHorizontalGridLines						= true;
+				DrawVerticalGridLines						= true;
+				PaintPriceMarkers							= true;
+				ScaleJustification							= NinjaTrader.Gui.Chart.ScaleJustification.Right;
+				//Disable this property if your indicator requires custom values that cumulate with each new market data event. 
+				//See Help Guide for additional information.
+				IsSuspendedWhileInactive					= true;
+				Deek					= 1;
+			}
+			else if (State == State.Configure)
+			{
+			}
+			else if (State == State.DataLoaded)
+			{	
+				ClearOutputWindow(); 
+				
+				EMA1				= EMA(Close, 8);
+				EMA2				= EMA(Close, 13);
+				EMA3				= EMA(Close, 21);
+				MACD1				= MACD(Close, 13, 21, 13);
+			
+				//myStop 				= Low[2] - (Stop * TickSize);
+				
+				//SetProfitTarget("", CalculationMode.Price, Position.AveragePrice + ( Position.AveragePrice  - Low[BarsSinceEntryExecution()+1] ));
+				//SetStopLoss("", CalculationMode.Price, Low[BarsSinceEntryExecution()+3], false);
+			}
+		}
+
+		protected override void OnBarUpdate()
+		{
+			//Add your custom indicator logic here.
+			
+			if (BarsInProgress != 0) 
+				return;
+
+			if (CurrentBars[0] < 2)
+				return;
+			
+			if ( 
+				
+				EMA1[0] > EMA2[0] && EMA2[0] > EMA3[0]
+				&& EMA1[1] > EMA2[1] && EMA2[1] > EMA3[1]
+				&& EMA1[2] > EMA2[2] && EMA2[2] > EMA3[2]
+				&& EMA1[3] > EMA2[3] && EMA2[3] > EMA3[3]
+				&& EMA1[4] > EMA2[4] && EMA2[4] > EMA3[4]
+				&& EMA1[5] > EMA2[5] && EMA2[5] > EMA3[5]
+				&& EMA1[6] > EMA2[6] && EMA2[6] > EMA3[6]
+				&& EMA1[7] > EMA2[7] && EMA2[7] > EMA3[7]
+				&& EMA1[8] > EMA2[8] && EMA2[8] > EMA3[8]
+				&& EMA1[9] > EMA2[9] && EMA2[9] > EMA3[9]
+				&& EMA1[10] > EMA2[10] && EMA2[10] > EMA3[10]
+				&& EMA1[11] > EMA2[11] && EMA2[11] > EMA3[11]
+				&& EMA1[12] > EMA2[12] && EMA2[12] > EMA3[12]
+				&& EMA1[13] > EMA2[13] && EMA2[13] > EMA3[13]
+				&& EMA1[14] > EMA2[14] && EMA2[14] > EMA3[14]
+				&& EMA1[15] > EMA2[15] && EMA2[15] > EMA3[15]
+				&& EMA1[16] > EMA2[16] && EMA2[16] > EMA3[16]
+				&& EMA1[17] > EMA2[17] && EMA2[17] > EMA3[17]
+				&& EMA1[18] > EMA2[18] && EMA2[18] > EMA3[18]
+				&& EMA1[19] > EMA2[19] && EMA2[19] > EMA3[19]
+				&& EMA1[20] > EMA2[20] && EMA2[20] > EMA3[20]
+				
+				)
+				
+				{
+				BackBrush = new SolidColorBrush(Color.FromArgb(150, 152, 251, 152) );  // This is PaleGreen
+				}
+			
+			if ( 
+				
+				EMA1[0] < EMA2[0] && EMA2[0] < EMA3[0]
+				&& EMA1[1] < EMA2[1] && EMA2[1] < EMA3[1]
+				&& EMA1[2] < EMA2[2] && EMA2[2] < EMA3[2]
+				&& EMA1[3] < EMA2[3] && EMA2[3] < EMA3[3]
+				&& EMA1[4] < EMA2[4] && EMA2[4] < EMA3[4]
+				&& EMA1[5] < EMA2[5] && EMA2[5] < EMA3[5]
+				&& EMA1[6] < EMA2[6] && EMA2[6] < EMA3[6]
+				&& EMA1[7] < EMA2[7] && EMA2[7] < EMA3[7]
+				&& EMA1[8] < EMA2[8] && EMA2[8] < EMA3[8]
+				&& EMA1[9] < EMA2[9] && EMA2[9] < EMA3[9]
+				&& EMA1[10] < EMA2[10] && EMA2[10] < EMA3[10]
+				&& EMA1[11] < EMA2[11] && EMA2[11] < EMA3[11]
+				&& EMA1[12] < EMA2[12] && EMA2[12] < EMA3[12]
+				&& EMA1[13] < EMA2[13] && EMA2[13] < EMA3[13]
+				&& EMA1[14] < EMA2[14] && EMA2[14] < EMA3[14]
+				&& EMA1[15] < EMA2[15] && EMA2[15] < EMA3[15]
+				&& EMA1[16] < EMA2[16] && EMA2[16] < EMA3[16]
+				&& EMA1[17] < EMA2[17] && EMA2[17] < EMA3[17]
+				&& EMA1[18] < EMA2[18] && EMA2[18] < EMA3[18]
+				&& EMA1[19] < EMA2[19] && EMA2[19] < EMA3[19]
+				&& EMA1[20] < EMA2[20] && EMA2[20] < EMA3[20]
+				
+				)
+				
+				{
+				BackBrush = new SolidColorBrush(Color.FromArgb(150, 255, 160, 122) ); // This is LightSalmon
+				}
+		}
+
+		#region Properties
+		[NinjaScriptProperty]
+		[Range(1, int.MaxValue)]
+		[Display(Name="Deek", Order=1, GroupName="Parameters")]
+		public int Deek
+		{ get; set; }
+		#endregion
+
+	}
+}
+
+#region NinjaScript generated code. Neither change nor remove.
+
+namespace NinjaTrader.NinjaScript.Indicators
+{
+	public partial class Indicator : NinjaTrader.Gui.NinjaScript.IndicatorRenderBase
+	{
+		private EMA3way21[] cacheEMA3way21;
+		public EMA3way21 EMA3way21(int deek)
+		{
+			return EMA3way21(Input, deek);
+		}
+
+		public EMA3way21 EMA3way21(ISeries<double> input, int deek)
+		{
+			if (cacheEMA3way21 != null)
+				for (int idx = 0; idx < cacheEMA3way21.Length; idx++)
+					if (cacheEMA3way21[idx] != null && cacheEMA3way21[idx].Deek == deek && cacheEMA3way21[idx].EqualsInput(input))
+						return cacheEMA3way21[idx];
+			return CacheIndicator<EMA3way21>(new EMA3way21(){ Deek = deek }, input, ref cacheEMA3way21);
+		}
+	}
+}
+
+namespace NinjaTrader.NinjaScript.MarketAnalyzerColumns
+{
+	public partial class MarketAnalyzerColumn : MarketAnalyzerColumnBase
+	{
+		public Indicators.EMA3way21 EMA3way21(int deek)
+		{
+			return indicator.EMA3way21(Input, deek);
+		}
+
+		public Indicators.EMA3way21 EMA3way21(ISeries<double> input , int deek)
+		{
+			return indicator.EMA3way21(input, deek);
+		}
+	}
+}
+
+namespace NinjaTrader.NinjaScript.Strategies
+{
+	public partial class Strategy : NinjaTrader.Gui.NinjaScript.StrategyRenderBase
+	{
+		public Indicators.EMA3way21 EMA3way21(int deek)
+		{
+			return indicator.EMA3way21(Input, deek);
+		}
+
+		public Indicators.EMA3way21 EMA3way21(ISeries<double> input , int deek)
+		{
+			return indicator.EMA3way21(input, deek);
+		}
+	}
+}
+
+#endregion
